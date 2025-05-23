@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PodcastCard from './components/PodcastCard';
-import SearchBar from './components/SearchBar';
-import Alert from './components/Alert';
-import StickyPlayer from './components/StickyPlayer';
-import { APP_NAME } from './config';
-import AnimatedHeading from './components/AnimatedHeading';
+import { useSearchParams } from 'next/navigation';
+import PodcastCard from '../components/PodcastCard';
+import SearchBar from '../components/SearchBar';
+import Alert from '../components/Alert';
+import StickyPlayer from '../components/StickyPlayer';
+import SubscribeModal from '../components/SubModal';
+import AnimatedHeading from '../components/AnimatedHeading';
+import { APP_NAME } from '../config';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,6 +37,11 @@ export default function Home() {
 
   const [visibleCount, setVisibleCount] = useState(16);
   const loadMoreRef = useRef(null);
+
+  const searchParams = useSearchParams()
+  const hasEmail = !!searchParams.get("email")
+
+  const [subModalOpen, setSubModalOpen] = useState(!hasEmail)
 
   const filterValidPodcasts = async (podcasts) => {
     if (!podcasts) return [];
@@ -98,6 +105,12 @@ export default function Home() {
 
   return (
     <main className="max-w-7xl mx-auto">
+
+      {/* Alert Section */}
+      {hasEmail && <Alert type='happy' message={`Thanks for subscribing! You'll now receive the latest from ${APP_NAME}.`} />}
+
+      {/* Unsubscribe modal */}
+      <SubscribeModal isOpen={subModalOpen} setIsOpen={setSubModalOpen} />
       <section className="pt-24 pb-32 text-center">
 
         <AnimatedHeading appName={APP_NAME} />

@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PodcastCard from './components/PodcastCard';
-import SearchBar from './components/SearchBar';
-import Alert from './components/Alert';
-import StickyPlayer from './components/StickyPlayer';
-import { APP_NAME } from './config';
-import AnimatedHeading from './components/AnimatedHeading';
+import { useSearchParams } from 'next/navigation';
+import PodcastCard from '../components/PodcastCard';
+import SearchBar from '../components/SearchBar';
+import Alert from '../components/Alert';
+import StickyPlayer from '../components/StickyPlayer';
+import UnsubscribeModal from '../components/UnsubModal';
+import AnimatedHeading from '../components/AnimatedHeading';
+import { APP_NAME } from '../config';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,6 +37,11 @@ export default function Home() {
 
   const [visibleCount, setVisibleCount] = useState(16);
   const loadMoreRef = useRef(null);
+
+  const searchParam = useSearchParams();
+  const hasEmail = !!searchParam.get("email");
+
+  const [unsubModalOpen, setUnsubModalOpen] = useState(!hasEmail)
 
   const filterValidPodcasts = async (podcasts) => {
     if (!podcasts) return [];
@@ -98,6 +105,13 @@ export default function Home() {
 
   return (
     <main className="max-w-7xl mx-auto">
+
+      {/* Alert Section */}
+      {hasEmail && <Alert type='sad' message="We're sorry to see you go" />}
+
+      {/* Unsubscribe modal */}
+      <UnsubscribeModal isOpen={unsubModalOpen} setIsOpen={setUnsubModalOpen} />
+
       <section className="pt-24 pb-32 text-center">
 
         <AnimatedHeading appName={APP_NAME} />
@@ -192,5 +206,6 @@ export default function Home() {
         )}
       </AnimatePresence>
     </main>
+
   );
 }
