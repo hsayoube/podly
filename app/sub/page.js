@@ -2,12 +2,12 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PodcastCard from './components/PodcastCard';
-import SearchBar from './components/SearchBar';
-import Alert from './components/Alert';
-import StickyPlayer from './components/StickyPlayer';
-import { APP_NAME } from './config';
-import AnimatedHeading from './components/AnimatedHeading';
+import PodcastCard from '../components/PodcastCard';
+import SearchBar from '../components/SearchBar';
+import Alert from '../components/Alert';
+import StickyPlayer from '../components/StickyPlayer';
+import { APP_NAME } from '../config';
+import AnimatedHeading from '../components/AnimatedHeading';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -107,7 +107,7 @@ export default function Home() {
       {/* Alert Section */}
       {hasEmail && <Alert type='happy' message={`Thanks for subscribing! You'll now receive the latest from ${APP_NAME}.`} />}
 
-      {/* Unsubscribe modal */}
+      {/* Subscribe modal */}
       <SubscribeModal isOpen={subModalOpen} setIsOpen={setSubModalOpen} />
 
       <section className="pt-24 pb-20 sm:pt-28 text-center">

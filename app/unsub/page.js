@@ -2,12 +2,12 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PodcastCard from './components/PodcastCard';
-import SearchBar from './components/SearchBar';
-import Alert from './components/Alert';
-import StickyPlayer from './components/StickyPlayer';
-import { APP_NAME } from './config';
-import AnimatedHeading from './components/AnimatedHeading';
+import PodcastCard from '../components/PodcastCard';
+import SearchBar from '../components/SearchBar';
+import Alert from '../components/Alert';
+import StickyPlayer from '../components/StickyPlayer';
+import { APP_NAME } from '../config';
+import AnimatedHeading from '../components/AnimatedHeading';
 
 const containerVariants = {
   hidden: { opacity: 0 },
