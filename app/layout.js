@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono, Pacifico } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "next-themes";
 import Navbar from "./components/Navbar";
 import { APP_NAME, APP_DOMAIN } from "./config";
 import { Suspense } from "react";
@@ -53,7 +53,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <Suspense>
-      <html lang="en" className="scroll-smooth">
+      <html lang="en" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased
         bg-gradient-to-br
@@ -62,16 +62,13 @@ export default function RootLayout({ children }) {
         text-gray-950 dark:text-gray-200 bg-opacity-90 bg-fixed
         transition-colors duration-500 ease-in-out`}
         >
-          <ThemeProvider>
+          <ThemeProvider attribute="data-theme" enableSystem>
             <div className="flex flex-col min-h-screen">
               <Navbar />
 
               <main className="flex-1 px-4 sm:px-6 md:px-10 py-20">
                 {children}
               </main>
-
-              {/* Optional: Add a Footer if needed */}
-              {/* <Footer /> */}
             </div>
           </ThemeProvider>
         </body>

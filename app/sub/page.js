@@ -2,14 +2,12 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams } from 'next/navigation';
-import PodcastCard from '../components/PodcastCard';
-import SearchBar from '../components/SearchBar';
-import Alert from '../components/Alert';
-import StickyPlayer from '../components/StickyPlayer';
-import SubscribeModal from '../components/SubModal';
-import AnimatedHeading from '../components/AnimatedHeading';
-import { APP_NAME } from '../config';
+import PodcastCard from './components/PodcastCard';
+import SearchBar from './components/SearchBar';
+import Alert from './components/Alert';
+import StickyPlayer from './components/StickyPlayer';
+import { APP_NAME } from './config';
+import AnimatedHeading from './components/AnimatedHeading';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -67,7 +65,7 @@ export default function Home() {
       })
     );
 
-    return podcastChecks.filter(Boolean); // remove nulls
+    return podcastChecks.filter(Boolean);
   };
 
   const fetchPodcasts = useCallback(async (term = 'tech') => {
@@ -104,28 +102,28 @@ export default function Home() {
   }, [podcasts.length]);
 
   return (
-    <main className="max-w-7xl mx-auto">
+    <main className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-colors duration-500">
 
       {/* Alert Section */}
       {hasEmail && <Alert type='happy' message={`Thanks for subscribing! You'll now receive the latest from ${APP_NAME}.`} />}
 
       {/* Unsubscribe modal */}
       <SubscribeModal isOpen={subModalOpen} setIsOpen={setSubModalOpen} />
-      <section className="pt-24 pb-32 text-center">
 
+      <section className="pt-24 pb-20 sm:pt-28 text-center">
         <AnimatedHeading appName={APP_NAME} />
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
-          className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mx-auto mb-8"
+          className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mx-auto mb-8"
         >
-          Discover trending and curated podcasts. Explore, listen, and stay inspired with {" "}
-          <span className='bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 bg-clip-text text-transparent' style={{ fontFamily: "'Pacifico', cursive" }}>
+          Discover trending and curated podcasts. Explore, listen, and stay inspired with{" "}
+          <span className="bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]" style={{ fontFamily: "'Pacifico', cursive" }}>
             {APP_NAME}
           </span>
-          {" "} — your podcast discovery companion.
+          {" "}— your podcast discovery companion.
         </motion.p>
 
         <motion.div
@@ -147,7 +145,7 @@ export default function Home() {
           {Array.from({ length: 8 }).map((_, i) => (
             <motion.div
               key={i}
-              className="h-48 bg-gray-300 dark:bg-gray-700 rounded-xl animate-pulse"
+              className="h-48 rounded-xl animate-pulse bg-gradient-to-br from-gray-500 via-gray-600 to-gray-500 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800"
               whileHover={{ scale: 1.03 }}
             />
           ))}
@@ -157,7 +155,7 @@ export default function Home() {
       {/* Results */}
       {!loading && podcasts?.length > 0 && (
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-8"
+          className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-8 px-2 sm:px-0"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -168,7 +166,12 @@ export default function Home() {
               <motion.div
                 key={podcast.trackId}
                 variants={cardVariants}
-                whileHover={{ scale: 1.03 }}
+                whileHover={{
+                  scale: 1.05,
+                  rotate: 0.5,
+                  filter: 'brightness(1.1)',
+                }}
+                className="transition-all duration-300 shadow-md shadow-purple-400/80 dark:shadow-purple-500/40 bg-zinc-400/50 dark:bg-zinc-800/80 backdrop-blur-md p-2 rounded-xl"
               >
                 <PodcastCard
                   podcast={podcast}
@@ -191,16 +194,20 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Modal */}
+      {/* Modal / Sticky Player */}
       <AnimatePresence>
         {selectedPodcast && (
           <motion.div
             key="modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
           >
-            <StickyPlayer currentCollection={selectedPodcast} isPlaying={isPlaying} onTogglePlay={() => setIsPlaying(!isPlaying)} />
+            <StickyPlayer
+              currentCollection={selectedPodcast}
+              isPlaying={isPlaying}
+              onTogglePlay={() => setIsPlaying(!isPlaying)}
+            />
           </motion.div>
         )}
       </AnimatePresence>
