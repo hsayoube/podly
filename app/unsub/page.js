@@ -8,6 +8,8 @@ import Alert from '../components/Alert';
 import StickyPlayer from '../components/StickyPlayer';
 import { APP_NAME } from '../config';
 import AnimatedHeading from '../components/AnimatedHeading';
+import UnsubscribeModal from '../components/UnsubModal';
+import { useSearchParams } from 'next/navigation';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,7 +27,7 @@ const cardVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Home() {
+export default function UnsubscribePage() {
   const [loading, setLoading] = useState(true);
   const [podcasts, setPodcasts] = useState([]);
   const [selectedPodcast, setSelectedPodcast] = useState(null);
